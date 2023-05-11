@@ -1,7 +1,7 @@
 using UnityEngine;
+using System.Collections.Generic;
+using System.IO;
 using Newtonsoft.Json;
-using UnityEngine.Networking;
-using System.Collections;
 using System.Text;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -12,38 +12,24 @@ namespace Kalkatos.UnityGame.Test
 	public class TestScript : MonoBehaviour
 	{
 #if UNITY_EDITOR
-		private static TestScript instance;
-
-		[SerializeField] private string url;
-		[SerializeField] private string message;
-
-		private void Awake ()
-		{
-			instance = this;
-		}
 
 		[MenuItem("Test/Test")]
 		public static void Test ()
 		{
-			UnityEngine.Debug.Log("Requesting");
-			UnityWebRequest www = new UnityWebRequest(instance.url);
-			www.method = "POST";
-			www.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(instance.message));
-			www.uploadHandler.contentType = "application/json";
-			www.downloadHandler = new DownloadHandlerBuffer();
-			instance.StartCoroutine(Wait(www.SendWebRequest()));
+			Dictionary<string, string> uris = new Dictionary<string, string>
+			{
+				{ "SetPlayerData", "https://kalkatos-games.azurewebsites.net/api/SetPlayerData?code=oFl2jbDCTLC7yniharMjY1qjJpBq7tqArNehC-SHMa0sAzFuFMdPgg==" },
+				{ "LogIn", "https://kalkatos-games.azurewebsites.net/api/LogIn?code=oFl2jbDCTLC7yniharMjY1qjJpBq7tqArNehC-SHMa0sAzFuFMdPgg==" },
+				{ "FindMatch", "https://kalkatos-games.azurewebsites.net/api/FindMatch?code=oFl2jbDCTLC7yniharMjY1qjJpBq7tqArNehC-SHMa0sAzFuFMdPgg==" },
+				{ "GetMatch", "https://kalkatos-games.azurewebsites.net/api/GetMatch?code=oFl2jbDCTLC7yniharMjY1qjJpBq7tqArNehC-SHMa0sAzFuFMdPgg==" },
+				{ "LeaveMatch", "https://kalkatos-games.azurewebsites.net/api/LeaveMatch?code=oFl2jbDCTLC7yniharMjY1qjJpBq7tqArNehC-SHMa0sAzFuFMdPgg==" },
+				{ "SendAction", "https://kalkatos-games.azurewebsites.net/api/SendAction?code=oFl2jbDCTLC7yniharMjY1qjJpBq7tqArNehC-SHMa0sAzFuFMdPgg==" },
+				{ "GetMatchState", "https://kalkatos-games.azurewebsites.net/api/GetMatchState?code=oFl2jbDCTLC7yniharMjY1qjJpBq7tqArNehC-SHMa0sAzFuFMdPgg==" },
+				{ "GetGameConfig", "https://kalkatos-games.azurewebsites.net/api/GetGameConfig?code=oFl2jbDCTLC7yniharMjY1qjJpBq7tqArNehC-SHMa0sAzFuFMdPgg==" }
+			};
+			File.WriteAllBytes($"{Application.dataPath}/uris", Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(uris)));
 		}
 
-		private static IEnumerator Wait (UnityWebRequestAsyncOperation operation)
-		{
-			WaitUntil waitUntil = new WaitUntil(() => operation.isDone);
-			yield return waitUntil;
-			UnityEngine.Debug.Log($"Operation : {JsonConvert.SerializeObject(operation)}");
-			UnityEngine.Debug.Log($"WebRequest : {JsonConvert.SerializeObject(operation?.webRequest)}");
-			UnityEngine.Debug.Log($"DownloadHandler : {JsonConvert.SerializeObject(operation?.webRequest?.downloadHandler)}");
-			UnityEngine.Debug.Log($"Finished : {operation?.webRequest?.downloadHandler?.text}");
-			operation.webRequest.Dispose();
-		}
 #endif
 	}
 }
