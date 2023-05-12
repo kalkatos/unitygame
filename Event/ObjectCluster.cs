@@ -24,6 +24,27 @@ namespace Kalkatos.UnityGame
 		}
 
 		[Button]
+		public void Toggle ()
+		{
+			if (useChildren)
+			{
+				Transform child = transform.GetChild(0);
+				if (child == null)
+					return;
+				if (child.gameObject.activeSelf)
+					SetActive(false);
+				else
+					SetActive(true);
+			}
+			if (objects == null || objects.Length == 0)
+				return;
+			else if (objects[0].activeSelf)
+				SetActive(false);
+			else
+				SetActive(true);
+		}
+
+		[Button]
 		public void Activate ()
 		{
 			SetActive(true);
