@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
-using Sirenix.OdinInspector;
+#if ODIN_INSPECTOR
+using Sirenix.OdinInspector; 
+#endif
 using System;
 using System.Collections;
-using Kalkatos.UnityGame.Scriptable;
 
 namespace Kalkatos.UnityGame
 {
@@ -11,12 +12,28 @@ namespace Kalkatos.UnityGame
 	{
 		[SerializeField] private TimedEventBit[] events;
 		[SerializeField] private bool isSequence;
-		[SerializeField, ShowIf(nameof(isSequence))] private bool loopSequence;
-		[SerializeField, ShowIf(nameof(isSequence)), ShowIf(nameof(loopSequence))] private int loopSequenceCount;
+#if ODIN_INSPECTOR
+		[ShowIf(nameof(isSequence))] 
+#endif
+        [SerializeField] private bool loopSequence;
+#if ODIN_INSPECTOR
+		[ShowIf(nameof(isSequence)), ShowIf(nameof(loopSequence))] 
+#endif
+        [SerializeField] private int loopSequenceCount;
 
-		[ShowIf(nameof(isSequence))] public UnityEvent SequenceTimeoutEvent;
-		[ShowIf(nameof(isSequence))] public UnityEvent AnyTimeoutEvent;
-		[ShowIf(nameof(isSequence)), ShowIf(nameof(loopSequence))] public UnityEvent FinalTimeoutEvent;
+		// Events
+#if ODIN_INSPECTOR
+		[ShowIf(nameof(isSequence))]  
+#endif
+        public UnityEvent SequenceTimeoutEvent;
+#if ODIN_INSPECTOR
+		[ShowIf(nameof(isSequence))]  
+#endif
+        public UnityEvent AnyTimeoutEvent;
+#if ODIN_INSPECTOR
+		[ShowIf(nameof(isSequence)), ShowIf(nameof(loopSequence))]  
+#endif
+        public UnityEvent FinalTimeoutEvent;
 
 		private int currentEvent = 0;
 		private int loopCounter;
@@ -105,15 +122,32 @@ namespace Kalkatos.UnityGame
 	[Serializable]
 	public class TimedEventBit
 	{
-		[InlineProperty]
-		public FloatValueGetter timeAsGetter;
-		[HorizontalGroup] public bool loop;
-		[HorizontalGroup, HideLabel, ShowIf(nameof(loop))] public int loopCount;
+#if ODIN_INSPECTOR
+		[InlineProperty] 
+#endif
+        public FloatValueGetter timeAsGetter;
+#if ODIN_INSPECTOR
+		[HorizontalGroup]  
+#endif
+        public bool loop;
+#if ODIN_INSPECTOR
+		[HorizontalGroup, HideLabel, ShowIf(nameof(loop))]  
+#endif
+        public int loopCount;
 		public bool useUpdateEvent;
 		public UnityEvent TimeoutEvent;
-		[ShowIf(nameof(loop))] public UnityEvent EndOfLoopEvent;
-		[ShowIf(nameof(useUpdateEvent))] public bool InvertUpdateEvent;
-		[ShowIf(nameof(useUpdateEvent))] public UnityEvent<float> UpdateEvent;
+#if ODIN_INSPECTOR
+		[ShowIf(nameof(loop))]  
+#endif
+        public UnityEvent EndOfLoopEvent;
+#if ODIN_INSPECTOR
+		[ShowIf(nameof(useUpdateEvent))]  
+#endif
+        public bool InvertUpdateEvent;
+#if ODIN_INSPECTOR
+		[ShowIf(nameof(useUpdateEvent))]  
+#endif
+        public UnityEvent<float> UpdateEvent;
 
 		private int loopCounter;
 		private Coroutine currentWait;

@@ -1,20 +1,33 @@
-using Sirenix.OdinInspector;
+#if ODIN_INSPECTOR
+using Sirenix.OdinInspector;  
+#endif
 using System;
 using UnityEngine;
 
 namespace Kalkatos.UnityGame
 {
-	[Serializable, InlineProperty]
+#if ODIN_INSPECTOR
+	[InlineProperty] 
+#endif
+    [Serializable]
 	public class FloatValueGetter : IValueGetter<float>
 	{
-		[HorizontalGroup(0.3f), HideLabel]
-		public ValueType Type;
-		[HorizontalGroup(0.7f), HideLabel, ShowIf(nameof(Type), ValueType.Simple)]
-		public float SimpleValue;
-		[HorizontalGroup(0.7f), HideLabel, ShowIf(nameof(Type), ValueType.Random)]
-		public Vector2 RandomValue;
-		[HorizontalGroup(0.7f), HideLabel, ShowIf(nameof(Type), ValueType.Scriptable)]
-		public ScriptableObject ScriptableValue;
+#if ODIN_INSPECTOR
+		[HorizontalGroup(0.3f), HideLabel] 
+#endif
+        public ValueType Type;
+#if ODIN_INSPECTOR
+		[HorizontalGroup(0.7f), HideLabel, ShowIf(nameof(Type), ValueType.Simple)] 
+#endif
+        public float SimpleValue;
+#if ODIN_INSPECTOR
+		[HorizontalGroup(0.7f), HideLabel, ShowIf(nameof(Type), ValueType.Random)] 
+#endif
+        public Vector2 RandomValue;
+#if ODIN_INSPECTOR
+		[HorizontalGroup(0.7f), HideLabel, ShowIf(nameof(Type), ValueType.Scriptable)] 
+#endif
+        public ScriptableObject ScriptableValue;
 
 		public enum ValueType { Simple, Random, Scriptable }
 
@@ -41,17 +54,28 @@ namespace Kalkatos.UnityGame
 		}
 	}
 
-	[Serializable, InlineProperty]
+#if ODIN_INSPECTOR
+	[InlineProperty] 
+#endif
+    [Serializable]
 	public class IntValueGetter : IValueGetter<int>
 	{
-		[HorizontalGroup(0.3f), HideLabel]
-		public ValueType Type;
-		[HorizontalGroup(0.7f), HideLabel, ShowIf(nameof(Type), ValueType.Simple)]
-		public int SimpleValue;
-		[HorizontalGroup(0.7f), HideLabel, ShowIf(nameof(Type), ValueType.Random)]
-		public Vector2Int RandomValue;
-		[HorizontalGroup(0.7f), HideLabel, ShowIf(nameof(Type), ValueType.Scriptable)]
-		public ScriptableObject ScriptableValue;
+#if ODIN_INSPECTOR
+		[HorizontalGroup(0.3f), HideLabel] 
+#endif
+        public ValueType Type;
+#if ODIN_INSPECTOR
+		[HorizontalGroup(0.7f), HideLabel, ShowIf(nameof(Type), ValueType.Simple)] 
+#endif
+        public int SimpleValue;
+#if ODIN_INSPECTOR
+		[HorizontalGroup(0.7f), HideLabel, ShowIf(nameof(Type), ValueType.Random)] 
+#endif
+        public Vector2Int RandomValue;
+#if ODIN_INSPECTOR
+		[HorizontalGroup(0.7f), HideLabel, ShowIf(nameof(Type), ValueType.Scriptable)] 
+#endif
+        public ScriptableObject ScriptableValue;
 
 		public enum ValueType { Simple, Random, Scriptable }
 
@@ -78,15 +102,24 @@ namespace Kalkatos.UnityGame
 		}
 	}
 
-	[Serializable, InlineProperty]
+#if ODIN_INSPECTOR
+	[InlineProperty] 
+#endif
+    [Serializable]
 	public class StringValueGetter : IValueGetter<string>
 	{
-		[HorizontalGroup(0.3f), HideLabel]
-		public ValueType Type;
-		[HorizontalGroup(0.7f), HideLabel, ShowIf(nameof(Type), ValueType.Simple)]
-		public string SimpleValue;
-		[HorizontalGroup(0.7f), HideLabel, ShowIf(nameof(Type), ValueType.Scriptable)]
-		public ScriptableObject ScriptableValue;
+#if ODIN_INSPECTOR
+		[HorizontalGroup(0.3f), HideLabel] 
+#endif
+        public ValueType Type;
+#if ODIN_INSPECTOR
+		[HorizontalGroup(0.7f), HideLabel, ShowIf(nameof(Type), ValueType.Simple)] 
+#endif
+        public string SimpleValue;
+#if ODIN_INSPECTOR
+		[HorizontalGroup(0.7f), HideLabel, ShowIf(nameof(Type), ValueType.Scriptable)] 
+#endif
+        public ScriptableObject ScriptableValue;
 
 		public enum ValueType { Simple, Scriptable }
 
@@ -111,15 +144,24 @@ namespace Kalkatos.UnityGame
 		}
 	}
 
-	[Serializable, InlineProperty]
+#if ODIN_INSPECTOR
+	[InlineProperty] 
+#endif
+    [Serializable]
 	public class BoolValueGetter : IValueGetter<bool>
 	{
-		[HorizontalGroup(0.3f), HideLabel]
-		public ValueType Type;
-		[HorizontalGroup(0.7f), HideLabel, ShowIf(nameof(Type), ValueType.Simple)]
-		public bool SimpleValue;
-		[HorizontalGroup(0.7f), HideLabel, ShowIf(nameof(Type), ValueType.Scriptable)]
-		public ScriptableObject ScriptableValue;
+#if ODIN_INSPECTOR
+		[HorizontalGroup(0.3f), HideLabel] 
+#endif
+        public ValueType Type;
+#if ODIN_INSPECTOR
+		[HorizontalGroup(0.7f), HideLabel, ShowIf(nameof(Type), ValueType.Simple)] 
+#endif
+        public bool SimpleValue;
+#if ODIN_INSPECTOR
+		[HorizontalGroup(0.7f), HideLabel, ShowIf(nameof(Type), ValueType.Scriptable)] 
+#endif
+        public ScriptableObject ScriptableValue;
 
 		public enum ValueType { Simple, Scriptable }
 

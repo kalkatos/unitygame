@@ -1,12 +1,17 @@
 using UnityEngine;
+#if ODIN_INSPECTOR
 using Sirenix.OdinInspector;
+#endif
 
 namespace Kalkatos.UnityGame
 {
 	public class ObjectCluster : MonoBehaviour
     {
 		[SerializeField] private bool useChildren = true;
-		[SerializeField, HideIf(nameof(useChildren))] private GameObject[] objects;
+#if ODIN_INSPECTOR
+		[HideIf(nameof(useChildren))]
+#endif
+		[SerializeField] private GameObject[] objects;
 
 		public void SetInactive (bool b)
 		{
@@ -23,8 +28,10 @@ namespace Kalkatos.UnityGame
 					item.SetActive(b);
 		}
 
-		[Button]
-		public void Toggle ()
+#if ODIN_INSPECTOR
+        [Button] 
+#endif
+        public void Toggle ()
 		{
 			if (useChildren)
 			{
@@ -44,14 +51,18 @@ namespace Kalkatos.UnityGame
 				SetActive(true);
 		}
 
+#if ODIN_INSPECTOR
 		[Button]
+#endif
 		public void Activate ()
 		{
 			SetActive(true);
 		}
 
-		[Button]
-		public void Deactivate ()
+#if ODIN_INSPECTOR
+        [Button] 
+#endif
+        public void Deactivate ()
 		{
 			SetActive(false);
 		}

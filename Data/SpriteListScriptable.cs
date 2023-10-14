@@ -1,4 +1,6 @@
-﻿using Sirenix.OdinInspector;
+﻿#if ODIN_INSPECTOR
+using Sirenix.OdinInspector; 
+#endif
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,8 +9,10 @@ namespace Kalkatos.UnityGame
 	[CreateAssetMenu(fileName = "NewSpriteList", menuName = "Sprite List")]
 	public class SpriteListScriptable : ScriptableObject
 	{
-		[PreviewField]
-		public Sprite[] Sprites;
+#if ODIN_INSPECTOR
+		[PreviewField] 
+#endif
+        public Sprite[] Sprites;
 
 		private Dictionary<string, Sprite> spriteDict = new Dictionary<string, Sprite>();
 

@@ -1,4 +1,6 @@
-﻿using Sirenix.OdinInspector;
+﻿#if ODIN_INSPECTOR
+using Sirenix.OdinInspector;  
+#endif
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -8,7 +10,10 @@ namespace Kalkatos.UnityGame.UI
 {
 	public class SelectableImageGrid : MonoBehaviour
     {
-		[PropertyOrder(99)] public UnityEvent<int> OnImageSelected;
+#if ODIN_INSPECTOR
+		[PropertyOrder(99)]  
+#endif
+        public UnityEvent<int> OnImageSelected;
 
 		[SerializeField] private SpriteListScriptable spriteList;
 		[SerializeField] private SelectableImage mold;
@@ -44,7 +49,9 @@ namespace Kalkatos.UnityGame.UI
 			}
 		}
 
-		[Button]
+#if ODIN_INSPECTOR
+		[Button] 
+#endif
         private void Populate ()
         {
 			if (spriteList == null || spriteList.Sprites == null || spriteList.Sprites.Length == 0)
