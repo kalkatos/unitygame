@@ -1,6 +1,7 @@
 #if ODIN_INSPECTOR
 using Sirenix.OdinInspector;
 #endif
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -29,13 +30,29 @@ namespace Kalkatos.UnityGame.Audio
                 sfxChannelQueue.Enqueue(sfxChannels[i]);
         }
 
-        public static void PlayMusic (BackgroundMusic music)
+        public static void PlayMusic (BackgroundMusic music, float fadeInTime = 0f, float delay = 0f)
         {
+            if (delay > 0)
+            {
+                instance.Wait(delay, () => PlayMusic(music, fadeInTime));
+                return;
+            }
             instance.musicChannel.Stop();
             instance.musicChannel.clip = music.Clip;
-            instance.musicChannel.volume = music.Volume;
             instance.musicChannel.loop = music.Loop;
             instance.musicChannel.Play();
+            if (fadeInTime > 0)
+                instance.StartCoroutine(instance.FadeMusic(fadeInTime, 0, music.Volume));
+            else
+                instance.musicChannel.volume = music.Volume;
+        }
+
+        public static void StopMusic (float fadeOutTime = 0f)
+        {
+            if (fadeOutTime > 0)
+                instance.StartCoroutine(instance.FadeMusic(fadeOutTime, instance.musicChannel.volume, 0, instance.musicChannel.Stop));
+            else
+                instance.musicChannel.Stop();
         }
 
         public static void PlaySfx (SoundEffect sfx)
@@ -47,6 +64,21 @@ namespace Kalkatos.UnityGame.Audio
             source.volume = sfx.Volume;
             source.Play();
             sfxChannelQueue.Enqueue(source);
+        }
+
+        private IEnumerator FadeMusic (float time, float startVolume, float endVolume, System.Action callback = null)
+        {
+            instance.musicChannel.volume = startVolume;
+            float startTime = Time.time;
+            float elapsed = 0;
+            while (elapsed < time)
+            {
+                elapsed = Time.time - startTime;
+                instance.musicChannel.volume = Mathf.Lerp(startVolume, endVolume, elapsed / time);
+                yield return null;
+            }
+            instance.musicChannel.volume = endVolume;
+            callback?.Invoke();
         }
     }
 

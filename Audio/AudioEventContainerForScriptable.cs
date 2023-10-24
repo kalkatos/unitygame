@@ -14,17 +14,17 @@ namespace Kalkatos.UnityGame.Audio
         private void Awake ()
         {
             for (int i = 0; i < musicEvents.Length; i++)
-                musicEvents[i].RegisterSignals();
+                musicEvents[i].RegisterSignal();
             for (int i = 0; i < sfxEvents.Length; i++)
-                sfxEvents[i].RegisterSignals();
+                sfxEvents[i].RegisterSignal();
         }
 
         private void OnDestroy ()
         {
             for (int i = 0; i < musicEvents.Length; i++)
-                musicEvents[i].UnregisterSignals();
+                musicEvents[i].UnregisterSignal();
             for (int i = 0; i < sfxEvents.Length; i++)
-                sfxEvents[i].UnregisterSignals();
+                sfxEvents[i].UnregisterSignal();
         }
 #endif
     }
@@ -33,7 +33,7 @@ namespace Kalkatos.UnityGame.Audio
     [System.Serializable]
     public class SignalToMusic
     {
-        public Signal[] Signals;
+        public Signal Signal;
         public BackgroundMusic Music;
 
         public void Play ()
@@ -46,77 +46,69 @@ namespace Kalkatos.UnityGame.Audio
         public void Play (int i) => Play();
         public void Play (bool b) => Play();
 
-        public void RegisterSignals ()
+        public void RegisterSignal ()
         {
-            for (int i = 0; i < Signals.Length; i++)
+            if (Signal is TypedSignal<string>)
             {
-                Signal signal = Signals[i];
-                if (signal is TypedSignal<string>)
-                {
-                    var typed = (TypedSignal<string>)signal;
-                    typed.OnSignalEmittedWithParam.AddListener(Play);
-                    return;
-                }
-                if (signal is TypedSignal<float>)
-                {
-                    var typed = (TypedSignal<float>)signal;
-                    typed.OnSignalEmittedWithParam.AddListener(Play);
-                    return;
-                }
-                if (signal is TypedSignal<int>)
-                {
-                    var typed = (TypedSignal<int>)signal;
-                    typed.OnSignalEmittedWithParam.AddListener(Play);
-                    return;
-                }
-                if (signal is TypedSignal<bool>)
-                {
-                    var typed = (TypedSignal<bool>)signal;
-                    typed.OnSignalEmittedWithParam.AddListener(Play);
-                    return;
-                }
-                signal.OnSignalEmitted.AddListener(Play); 
+                var typed = (TypedSignal<string>)Signal;
+                typed.OnSignalEmittedWithParam.AddListener(Play);
+                return;
             }
+            if (Signal is TypedSignal<float>)
+            {
+                var typed = (TypedSignal<float>)Signal;
+                typed.OnSignalEmittedWithParam.AddListener(Play);
+                return;
+            }
+            if (Signal is TypedSignal<int>)
+            {
+                var typed = (TypedSignal<int>)Signal;
+                typed.OnSignalEmittedWithParam.AddListener(Play);
+                return;
+            }
+            if (Signal is TypedSignal<bool>)
+            {
+                var typed = (TypedSignal<bool>)Signal;
+                typed.OnSignalEmittedWithParam.AddListener(Play);
+                return;
+            }
+            Signal.OnSignalEmitted.AddListener(Play);
         }
 
-        public void UnregisterSignals ()
+        public void UnregisterSignal ()
         {
-            for (int i = 0; i < Signals.Length; i++)
+            if (Signal is TypedSignal<string>)
             {
-                Signal signal = Signals[i];
-                if (signal is TypedSignal<string>)
-                {
-                    var typed = (TypedSignal<string>)signal;
-                    typed.OnSignalEmittedWithParam.RemoveListener(Play);
-                    return;
-                }
-                if (signal is TypedSignal<float>)
-                {
-                    var typed = (TypedSignal<float>)signal;
-                    typed.OnSignalEmittedWithParam.RemoveListener(Play);
-                    return;
-                }
-                if (signal is TypedSignal<int>)
-                {
-                    var typed = (TypedSignal<int>)signal;
-                    typed.OnSignalEmittedWithParam.RemoveListener(Play);
-                    return;
-                }
-                if (signal is TypedSignal<bool>)
-                {
-                    var typed = (TypedSignal<bool>)signal;
-                    typed.OnSignalEmittedWithParam.RemoveListener(Play);
-                    return;
-                }
-                signal.OnSignalEmitted.RemoveListener(Play);
+                var typed = (TypedSignal<string>)Signal;
+                typed.OnSignalEmittedWithParam.RemoveListener(Play);
+                return;
             }
+            if (Signal is TypedSignal<float>)
+            {
+                var typed = (TypedSignal<float>)Signal;
+                typed.OnSignalEmittedWithParam.RemoveListener(Play);
+                return;
+            }
+            if (Signal is TypedSignal<int>)
+            {
+                var typed = (TypedSignal<int>)Signal;
+                typed.OnSignalEmittedWithParam.RemoveListener(Play);
+                return;
+            }
+            if (Signal is TypedSignal<bool>)
+            {
+                var typed = (TypedSignal<bool>)Signal;
+                typed.OnSignalEmittedWithParam.RemoveListener(Play);
+                return;
+            }
+            Signal.OnSignalEmitted.RemoveListener(Play);
         }
     }
 
     [System.Serializable]
     public class SignalToSfx
     {
-        public Signal[] Signals;
+        public Signal Signal;
         public SoundEffect SoundEffect;
 
         public void Play ()
@@ -129,70 +121,62 @@ namespace Kalkatos.UnityGame.Audio
         public void Play (int i) => Play();
         public void Play (bool b) => Play();
 
-        public void RegisterSignals ()
+        public void RegisterSignal ()
         {
-            for (int i = 0; i < Signals.Length; i++)
+            if (Signal is TypedSignal<string>)
             {
-                Signal signal = Signals[i];
-                if (signal is TypedSignal<string>)
-                {
-                    var typed = (TypedSignal<string>)signal;
-                    typed.OnSignalEmittedWithParam.AddListener(Play);
-                    return;
-                }
-                if (signal is TypedSignal<float>)
-                {
-                    var typed = (TypedSignal<float>)signal;
-                    typed.OnSignalEmittedWithParam.AddListener(Play);
-                    return;
-                }
-                if (signal is TypedSignal<int>)
-                {
-                    var typed = (TypedSignal<int>)signal;
-                    typed.OnSignalEmittedWithParam.AddListener(Play);
-                    return;
-                }
-                if (signal is TypedSignal<bool>)
-                {
-                    var typed = (TypedSignal<bool>)signal;
-                    typed.OnSignalEmittedWithParam.AddListener(Play);
-                    return;
-                }
-                signal.OnSignalEmitted.AddListener(Play);
+                var typed = (TypedSignal<string>)Signal;
+                typed.OnSignalEmittedWithParam.AddListener(Play);
+                return;
             }
+            if (Signal is TypedSignal<float>)
+            {
+                var typed = (TypedSignal<float>)Signal;
+                typed.OnSignalEmittedWithParam.AddListener(Play);
+                return;
+            }
+            if (Signal is TypedSignal<int>)
+            {
+                var typed = (TypedSignal<int>)Signal;
+                typed.OnSignalEmittedWithParam.AddListener(Play);
+                return;
+            }
+            if (Signal is TypedSignal<bool>)
+            {
+                var typed = (TypedSignal<bool>)Signal;
+                typed.OnSignalEmittedWithParam.AddListener(Play);
+                return;
+            }
+            Signal.OnSignalEmitted.AddListener(Play);
         }
 
-        public void UnregisterSignals ()
+        public void UnregisterSignal ()
         {
-            for (int i = 0; i < Signals.Length; i++)
+            if (Signal is TypedSignal<string>)
             {
-                Signal signal = Signals[i];
-                if (signal is TypedSignal<string>)
-                {
-                    var typed = (TypedSignal<string>)signal;
-                    typed.OnSignalEmittedWithParam.RemoveListener(Play);
-                    return;
-                }
-                if (signal is TypedSignal<float>)
-                {
-                    var typed = (TypedSignal<float>)signal;
-                    typed.OnSignalEmittedWithParam.RemoveListener(Play);
-                    return;
-                }
-                if (signal is TypedSignal<int>)
-                {
-                    var typed = (TypedSignal<int>)signal;
-                    typed.OnSignalEmittedWithParam.RemoveListener(Play);
-                    return;
-                }
-                if (signal is TypedSignal<bool>)
-                {
-                    var typed = (TypedSignal<bool>)signal;
-                    typed.OnSignalEmittedWithParam.RemoveListener(Play);
-                    return;
-                }
-                signal.OnSignalEmitted.RemoveListener(Play);
+                var typed = (TypedSignal<string>)Signal;
+                typed.OnSignalEmittedWithParam.RemoveListener(Play);
+                return;
             }
+            if (Signal is TypedSignal<float>)
+            {
+                var typed = (TypedSignal<float>)Signal;
+                typed.OnSignalEmittedWithParam.RemoveListener(Play);
+                return;
+            }
+            if (Signal is TypedSignal<int>)
+            {
+                var typed = (TypedSignal<int>)Signal;
+                typed.OnSignalEmittedWithParam.RemoveListener(Play);
+                return;
+            }
+            if (Signal is TypedSignal<bool>)
+            {
+                var typed = (TypedSignal<bool>)Signal;
+                typed.OnSignalEmittedWithParam.RemoveListener(Play);
+                return;
+            }
+            Signal.OnSignalEmitted.RemoveListener(Play);
         }
     }
 #endif
