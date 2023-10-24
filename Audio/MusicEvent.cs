@@ -1,14 +1,38 @@
-﻿using UnityEngine;
+﻿#if ODIN_INSPECTOR
+using Sirenix.OdinInspector;
+#endif
+using UnityEngine;
 
 namespace Kalkatos.UnityGame.Audio
 {
     [CreateAssetMenu(fileName = "NewMusicEvent", menuName = "Audio/Music Event", order = 9)]
     public class MusicEvent : ScriptableObject
     {
-        public BackgroundMusic Music;
+#if ODIN_INSPECTOR
+        [ShowIf(nameof(IsRandomMusic))]
+#endif
+        public bool IsRandomMusic;
+#if ODIN_INSPECTOR
+        [InlineButton(nameof(RandomizeMusic), "Random"), HideIf(nameof(IsRandomMusic))]
+#endif
+        public BackgroundMusic SingleMusic;
+#if ODIN_INSPECTOR
+        [ShowIf(nameof(IsRandomMusic))]
+#endif
+        public BackgroundMusic[] RandomMusic;
         public FloatValueGetter Delay;
         public FloatValueGetter FadeInTime;
         public FloatValueGetter FadeOutTime;
+
+        private BackgroundMusic Music
+        {
+            get
+            {
+                if (IsRandomMusic)
+                    return RandomMusic[Random.Range(0, RandomMusic.Length)];
+                return SingleMusic;
+            }
+        }
 
         public void Play () => Play(FadeInTime);
 
@@ -22,6 +46,11 @@ namespace Kalkatos.UnityGame.Audio
         public void Stop (FloatValueGetter fadeOutTime)
         {
             AudioController.StopMusic(fadeOutTime.GetValue());
+        }
+
+        public void RandomizeMusic ()
+        {
+            IsRandomMusic = true;
         }
     }
 }

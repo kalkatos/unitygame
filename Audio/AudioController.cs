@@ -34,25 +34,48 @@ namespace Kalkatos.UnityGame.Audio
         {
             if (delay > 0)
             {
+                Logger.Log($"[AudioController] Playing music {music.Clip} delayed {delay} seconds");
                 instance.Wait(delay, () => PlayMusic(music, fadeInTime));
                 return;
             }
-            instance.musicChannel.Stop();
+            if (instance.musicChannel.isPlaying)
+                instance.musicChannel.Stop();
             instance.musicChannel.clip = music.Clip;
             instance.musicChannel.loop = music.Loop;
             instance.musicChannel.Play();
             if (fadeInTime > 0)
-                instance.StartCoroutine(instance.FadeMusic(fadeInTime, 0, music.Volume));
+            {
+                Logger.Log($"[AudioController] FADING IN music {music.Clip} > > ");
+                instance.StartCoroutine(instance.FadeMusic(fadeInTime, 0, music.Volume, () => Logger.Log($"[AudioController] Full volume on music {music.Clip} ! ! ! "))); 
+            }
             else
-                instance.musicChannel.volume = music.Volume;
+            {
+                Logger.Log($"[AudioController] Playing music {music.Clip} > > ");
+                instance.musicChannel.volume = music.Volume; 
+            }
         }
 
         public static void StopMusic (float fadeOutTime = 0f)
         {
             if (fadeOutTime > 0)
-                instance.StartCoroutine(instance.FadeMusic(fadeOutTime, instance.musicChannel.volume, 0, instance.musicChannel.Stop));
+            {
+                Logger.Log($"[AudioController] FADING OUT music {instance.musicChannel.clip} < < ");
+                AudioClip fadeOutClip = instance.musicChannel.clip;
+                instance.StartCoroutine(instance.FadeMusic(fadeOutTime, instance.musicChannel.volume, 0,
+                    () =>
+                    {
+                        if (instance.musicChannel.clip == fadeOutClip)
+                        {
+                            instance.musicChannel.Stop();
+                            Logger.Log($"[AudioController] Stopped music {instance.musicChannel.clip} X X "); 
+                        }
+                    })); 
+            }
             else
-                instance.musicChannel.Stop();
+            {
+                Logger.Log($"[AudioController] Stopping music {instance.musicChannel.clip} [] [] ");
+                instance.musicChannel.Stop(); 
+            }
         }
 
         public static void PlaySfx (SoundEffect sfx)
