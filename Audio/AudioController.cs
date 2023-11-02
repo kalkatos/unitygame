@@ -16,6 +16,32 @@ namespace Kalkatos.UnityGame.Audio
 
         private static Queue<AudioSource> sfxChannelQueue = new();
 
+        private float masterMusicVolume = 1f;
+        private float masterSfxVolume = 1f;
+
+        public float MasterMusicVolume
+        {
+            get => masterMusicVolume;
+            set
+            {
+                value = Mathf.Clamp01(value);
+                masterMusicVolume = value;
+                musicChannel.volume = value;
+            }
+        }
+
+        public float MasterSfxVolume
+        {
+            get => masterSfxVolume;
+            set
+            {
+                value = Mathf.Clamp01(value);
+                masterSfxVolume = value;
+                for (int i = 0; i < sfxChannels.Length; i++)
+                    sfxChannels[i].volume = value;
+            }
+        }
+
         void Awake ()
         {
             if (instance == null)
@@ -34,7 +60,7 @@ namespace Kalkatos.UnityGame.Audio
         {
             if (delay > 0)
             {
-                Logger.Log($"[AudioController] Playing music {music.Clip} delayed {delay} seconds");
+                //Logger.Log($"[AudioController] Playing music {music.Clip} delayed {delay} seconds");
                 instance.Wait(delay, () => PlayMusic(music, fadeInTime));
                 return;
             }
@@ -43,15 +69,16 @@ namespace Kalkatos.UnityGame.Audio
             instance.musicChannel.clip = music.Clip;
             instance.musicChannel.loop = music.Loop;
             instance.musicChannel.Play();
+            float targetVolume = music.Volume * instance.masterMusicVolume;
             if (fadeInTime > 0)
             {
-                Logger.Log($"[AudioController] FADING IN music {music.Clip} > > ");
-                instance.StartCoroutine(instance.FadeMusic(fadeInTime, 0, music.Volume, () => Logger.Log($"[AudioController] Full volume on music {music.Clip} ! ! ! "))); 
+                //Logger.Log($"[AudioController] FADING IN music {music.Clip} > > ");
+                instance.StartCoroutine(instance.FadeMusic(fadeInTime, 0, targetVolume));//, () => Logger.Log($"[AudioController] Full volume on music {music.Clip} ! ! ! "))); 
             }
             else
             {
-                Logger.Log($"[AudioController] Playing music {music.Clip} > > ");
-                instance.musicChannel.volume = music.Volume; 
+                //Logger.Log($"[AudioController] Playing music {music.Clip} > > ");
+                instance.musicChannel.volume = targetVolume;
             }
         }
 
@@ -59,21 +86,22 @@ namespace Kalkatos.UnityGame.Audio
         {
             if (fadeOutTime > 0)
             {
-                Logger.Log($"[AudioController] FADING OUT music {instance.musicChannel.clip} < < ");
+                //Logger.Log($"[AudioController] FADING OUT music {instance.musicChannel.clip} < < ");
                 AudioClip fadeOutClip = instance.musicChannel.clip;
-                instance.StartCoroutine(instance.FadeMusic(fadeOutTime, instance.musicChannel.volume, 0,
+                float startingVolume = instance.musicChannel.volume;
+                instance.StartCoroutine(instance.FadeMusic(fadeOutTime, startingVolume, 0,
                     () =>
                     {
                         if (instance.musicChannel.clip == fadeOutClip)
                         {
                             instance.musicChannel.Stop();
-                            Logger.Log($"[AudioController] Stopped music {instance.musicChannel.clip} X X "); 
+                            //Logger.Log($"[AudioController] Stopped music {instance.musicChannel.clip} X X "); 
                         }
                     })); 
             }
             else
             {
-                Logger.Log($"[AudioController] Stopping music {instance.musicChannel.clip} [] [] ");
+                //Logger.Log($"[AudioController] Stopping music {instance.musicChannel.clip} [] [] ");
                 instance.musicChannel.Stop(); 
             }
         }
@@ -84,9 +112,19 @@ namespace Kalkatos.UnityGame.Audio
             source.Stop();
             source.clip = sfx.ClipVariations[Random.Range(0, sfx.ClipVariations.Length)];
             source.pitch = Random.Range(sfx.Pitch.x, sfx.Pitch.y);
-            source.volume = sfx.Volume;
+            source.volume = sfx.Volume * instance.masterSfxVolume;
             source.Play();
             sfxChannelQueue.Enqueue(source);
+        }
+
+        public static void SetMasterMusicVolume (float vol)
+        {
+            instance.MasterMusicVolume = vol;
+        }
+
+        public static void SetMasterSfxVolume (float vol)
+        {
+            instance.MasterSfxVolume = vol;
         }
 
         private IEnumerator FadeMusic (float time, float startVolume, float endVolume, System.Action callback = null)
