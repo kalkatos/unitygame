@@ -16,6 +16,12 @@ namespace Kalkatos.UnityGame.Debug
 
 		private void Awake ()
 		{
+			if (!UnityEngine.Debug.isDebugBuild)
+            {
+				Destroy(gameObject);
+				return;
+            }
+
 			debuggerButton.onClick.AddListener(OnDebugButtonClick);
 			closeButton.onClick.AddListener(OnCloseButtonClick);
 			Application.logMessageReceived += OnLogMessageReceived;
