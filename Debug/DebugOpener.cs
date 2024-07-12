@@ -50,7 +50,8 @@ namespace Kalkatos.UnityGame.Debug
 
 		private void OnCloseButtonClick ()
 		{
-			debuggerScreen.SetActive(false);
+            clickCounter = 0;
+            debuggerScreen.SetActive(false);
 		}
 
 		private void OnLogMessageReceived (string message, string stackTrace, LogType type)
