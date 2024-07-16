@@ -21,6 +21,8 @@ namespace Kalkatos.UnityGame
 			if (index < 0 || index >= Sprites.Length)
 			{
 				Logger.LogWarning($"Failed to get sprite with index {index}. Must be from 0 to {Sprites.Length}.");
+				if (Sprites.Length > 0)
+					return Sprites[Random.Range(0, Sprites.Length)];
 				return null; 
 			}
 			return Sprites[index];
@@ -34,7 +36,9 @@ namespace Kalkatos.UnityGame
 			if (!spriteDict.ContainsKey(name))
 			{
 				Logger.LogWarning($"Failed to get sprite with name {name}.");
-				return null;
+                if (Sprites.Length > 0)
+                    return Sprites[Random.Range(0, Sprites.Length)];
+                return null;
 			}
 			return spriteDict[name];
 		}
