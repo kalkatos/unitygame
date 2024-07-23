@@ -5,9 +5,15 @@ namespace Kalkatos.UnityGame
 {
 	public class StartCaller : MonoBehaviour
 	{
+		[SerializeField] public UnityEvent onAwakeEvent;
 		[SerializeField] public UnityEvent onStartEvent;
 
-		private void Start ()
+        private void Awake ()
+        {
+			onAwakeEvent?.Invoke();
+        }
+
+        private void Start ()
 		{
 			onStartEvent?.Invoke();
 		}
