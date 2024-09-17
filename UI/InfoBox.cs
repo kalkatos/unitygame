@@ -18,6 +18,11 @@ namespace Kalkatos.UnityGame
 
         public void Setup (ScriptableObject dataScriptable)
         {
+            if (dataScriptable == null)
+            {
+                Receive(null);
+                return;
+            }
             if (dataScriptable is not IInfoProvider)
             {
                 Logger.LogWarning($"Info box received signal from {dataScriptable.name} but it does not implement interface IInfoProvider.");
@@ -40,12 +45,24 @@ namespace Kalkatos.UnityGame
         {
             CheckDict();
 
+            if (info == null)
+            {
+                foreach (var kv in dict)
+                    ClearComp(kv.Value);
+                return;
+            }
+
             foreach (var kv in info)
             {
                 if (!dict.ContainsKey(kv.Key))
                     continue;
                 object data = info[kv.Key];
                 Component comp = dict[kv.Key];
+                if (data == null)
+                {
+                    ClearComp(comp);
+                    continue;
+                }
                 switch (data)
                 {
                     case string:
@@ -78,7 +95,9 @@ namespace Kalkatos.UnityGame
                         }
                         else if (comp is Image)
                         {
-                            ((Image)comp).fillAmount = (float)data;
+                            var image = (Image)comp;
+                            image.enabled = true;
+                            image.fillAmount = (float)data;
                             continue;
                         }
                         break;
@@ -90,7 +109,9 @@ namespace Kalkatos.UnityGame
                         }
                         else if (comp is Image)
                         {
-                            ((Image)comp).sprite = (Sprite)data;
+                            var image = (Image)comp;
+                            image.enabled = true;
+                            image.sprite = (Sprite)data;
                             continue;
                         }
                         break;
@@ -102,7 +123,9 @@ namespace Kalkatos.UnityGame
                         }
                         else if (comp is Image)
                         {
-                            ((Image)comp).color = (Color)data;
+                            var image = (Image)comp;
+                            image.enabled = true;
+                            image.color = (Color)data;
                             continue;
                         }
                         break;
@@ -118,6 +141,37 @@ namespace Kalkatos.UnityGame
                         continue;
                 }
                 Logger.LogWarning($"Info Box received data {data} of type {data.GetType().Name} but component {comp.name} of type {comp.GetType().Name} could nod handle.");
+            }
+
+            void ClearComp (Component comp)
+            {
+                switch (comp)
+                {
+                    case TMP_Text:
+                        ((TMP_Text)comp).text = "";
+                        break;
+                    case SpriteRenderer:
+                        var spriteRenderer = (SpriteRenderer)comp;
+                        spriteRenderer.sprite = null;
+                        spriteRenderer.color = Color.white;
+                        break;
+                    case Image:
+                        var image = (Image)comp;
+                        image.sprite = null;
+                        image.color = Color.white;
+                        image.enabled = false;
+                        image.fillAmount = 1;
+                        break;
+                    case RectTransform:
+                        RectTransform rect = (RectTransform)comp;
+                        Vector2 anchor = rect.anchorMax;
+                        anchor.x = 1;
+                        rect.anchorMax = anchor;
+                        break;
+                    case IInfoReceiver:
+                        ((IInfoReceiver)comp).Receive(null);
+                        break;
+                }
             }
         }
 
