@@ -58,6 +58,11 @@ namespace Kalkatos.UnityGame
                     continue;
                 object data = info[kv.Key];
                 Component comp = dict[kv.Key];
+                if (comp == null)
+                {
+                    Logger.LogError($"Info Box {name} component for key {kv.Key} is null.");
+                    continue;
+                }
                 if (data == null)
                 {
                     ClearComp(comp);
