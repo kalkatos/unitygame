@@ -64,32 +64,28 @@ namespace Kalkatos.UnityGame
         {
             if (instance == null)
                 return;
-            if (!instance.methods.ContainsKey(name))
-                instance.methods.Add(name, (TypeCode.Empty, method));
+            instance.methods[name] = (TypeCode.Empty, method);
         }
 
         public static void AddDebugMethod (string name, Action<string> method)
         {
             if (instance == null)
                 return;
-            if (!instance.methods.ContainsKey(name))
-                instance.methods.Add(name, (TypeCode.String, method));
+            instance.methods[name] = (TypeCode.String, method);
         }
 
         public static void AddDebugMethod (string name, Action<int> method)
         {
             if (instance == null)
                 return;
-            if (!instance.methods.ContainsKey(name))
-                instance.methods.Add(name, (TypeCode.Int32, method));
+            instance.methods[name] = (TypeCode.Int32, method);
         }
 
         public static void AddDebugMethod (string name, Action<float> method)
         {
             if (instance == null)
                 return;
-            if (!instance.methods.ContainsKey(name))
-                instance.methods.Add(name, (TypeCode.Single, method));
+            instance.methods[name] = (TypeCode.Single, method);
         }
 
         private void Toggle ()
@@ -139,6 +135,11 @@ namespace Kalkatos.UnityGame
                     return;
                 if (methods.TryGetValue(split[0], out (TypeCode, object) func))
                 {
+                    if (func.Item2 == null)
+                    {
+                        Logger.LogWarning($"Command not executed: {split[0]}. The method receiver is null.");
+                        return;
+                    }
                     switch (func.Item1)
                     {
                         case TypeCode.Empty:
@@ -152,7 +153,7 @@ namespace Kalkatos.UnityGame
                             int intParameter = 0;
                             if (split.Length > 1 && !int.TryParse(split[1], out intParameter))
                             {
-                                Logger.Log($"Command {split[0]} waits an integer number. Command not executed.");
+                                Logger.Log($"Command not executed: {split[0]}. It waits an integer number as parameter.");
                                 return;
                             }
                             ((Action<int>)func.Item2).Invoke(intParameter);
@@ -161,7 +162,7 @@ namespace Kalkatos.UnityGame
                             float floatParameter = 0;
                             if (split.Length > 1 && !float.TryParse(split[1], out floatParameter))
                             {
-                                Logger.Log($"Command {split[0]} waits a float number. Command not executed.");
+                                Logger.Log($"Command not executed: {split[0]}. It waits a float number as parameter.");
                                 return;
                             }
                             ((Action<float>)func.Item2).Invoke(floatParameter);
@@ -169,7 +170,7 @@ namespace Kalkatos.UnityGame
                         default:
                             throw new NotImplementedException($"Type of method {func.Item1} is not implemented for debug commands.");
                     }
-                    Logger.Log($"Command {split[0]} executed.");
+                    Logger.Log($"Command executed successfully: {input}");
                     lastCommandIndex = 0;
                     if (lastCommands.Contains(input))
                         lastCommands.RemoveAt(lastCommands.IndexOf(input));
