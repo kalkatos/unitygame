@@ -9,14 +9,13 @@ namespace Kalkatos.UnityGame
     [DefaultExecutionOrder(-100)]
     public class DebugCommands : MonoBehaviour
     {
-
         [SerializeField] private CanvasGroup canvasGroup;
         [SerializeField] private TMP_Text debugText;
         [SerializeField] private TMP_InputField inputField;
 
         private static DebugCommands instance;
         private bool isOpen;
-        private Dictionary<string, Action> methods = new();
+        private Dictionary<string, (TypeCode, object)> methods = new();
         private int lastCommandIndex;
         private List<string> lastCommands = new();
 
@@ -66,7 +65,31 @@ namespace Kalkatos.UnityGame
             if (instance == null)
                 return;
             if (!instance.methods.ContainsKey(name))
-                instance.methods.Add(name, method);
+                instance.methods.Add(name, (TypeCode.Empty, method));
+        }
+
+        public static void AddDebugMethod (string name, Action<string> method)
+        {
+            if (instance == null)
+                return;
+            if (!instance.methods.ContainsKey(name))
+                instance.methods.Add(name, (TypeCode.String, method));
+        }
+
+        public static void AddDebugMethod (string name, Action<int> method)
+        {
+            if (instance == null)
+                return;
+            if (!instance.methods.ContainsKey(name))
+                instance.methods.Add(name, (TypeCode.Int32, method));
+        }
+
+        public static void AddDebugMethod (string name, Action<float> method)
+        {
+            if (instance == null)
+                return;
+            if (!instance.methods.ContainsKey(name))
+                instance.methods.Add(name, (TypeCode.Single, method));
         }
 
         private void Toggle ()
@@ -114,15 +137,43 @@ namespace Kalkatos.UnityGame
             {
                 if (string.IsNullOrEmpty(split[0]))
                     return;
-                lastCommandIndex = 0;
-                if (lastCommands.Contains(split[0]))
-                    lastCommands.RemoveAt(lastCommands.IndexOf(split[0]));
-                lastCommands.Insert(0, split[0]);
-                if (methods.TryGetValue(split[0], out Action action))
+                if (methods.TryGetValue(split[0], out (TypeCode, object) func))
                 {
-                    action.Invoke();
+                    switch (func.Item1)
+                    {
+                        case TypeCode.Empty:
+                            ((Action)func.Item2).Invoke();
+                            break;
+                        case TypeCode.String:
+                            string strParameter = (split.Length > 1) ? split[1] : null;
+                            ((Action<string>)func.Item2).Invoke(strParameter);
+                            break;
+                        case TypeCode.Int32:
+                            int intParameter = 0;
+                            if (split.Length > 1 && !int.TryParse(split[1], out intParameter))
+                            {
+                                Logger.Log($"Command {split[0]} waits an integer number. Command not executed.");
+                                return;
+                            }
+                            ((Action<int>)func.Item2).Invoke(intParameter);
+                            break;
+                        case TypeCode.Single:
+                            float floatParameter = 0;
+                            if (split.Length > 1 && !float.TryParse(split[1], out floatParameter))
+                            {
+                                Logger.Log($"Command {split[0]} waits a float number. Command not executed.");
+                                return;
+                            }
+                            ((Action<float>)func.Item2).Invoke(floatParameter);
+                            break;
+                        default:
+                            throw new NotImplementedException($"Type of method {func.Item1} is not implemented for debug commands.");
+                    }
                     Logger.Log($"Command {split[0]} executed.");
-                    return;
+                    lastCommandIndex = 0;
+                    if (lastCommands.Contains(input))
+                        lastCommands.RemoveAt(lastCommands.IndexOf(input));
+                    lastCommands.Insert(0, input);
                 }
                 else
                     Logger.Log("Command not found.");
