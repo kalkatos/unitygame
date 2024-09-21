@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 namespace Kalkatos.UnityGame
 {
@@ -43,6 +44,11 @@ namespace Kalkatos.UnityGame
         {
             Application.logMessageReceived -= HandleLogReceived;
             inputField.onSubmit.RemoveListener(HandleInputSubmit);
+        }
+
+        private void Start ()
+        {
+            AddDefaultDebugMethods();
         }
 
         private void Update ()
@@ -184,6 +190,28 @@ namespace Kalkatos.UnityGame
         private void HandleLogReceived (string message, string stackTrace, LogType type)
         {
             debugText.text = $"{debugText.text}\n{message}";
+        }
+
+        private void AddDefaultDebugMethods ()
+        {
+            AddDebugMethod("scene", DebugChangeScene);
+            AddDebugMethod("time", (Action<float>)DebugTimeScale);
+            AddDebugMethod("fps", DebugFrameRate);
+        }
+
+        private void DebugChangeScene (string sceneName)
+        {
+            SceneManager.LoadScene(sceneName);
+        }
+
+        private void DebugTimeScale (float timeScale)
+        {
+            Time.timeScale = Mathf.Max(0, timeScale);
+        }
+
+        private void DebugFrameRate (int frameRate)
+        {
+            Application.targetFrameRate = Mathf.Max(1, frameRate);
         }
     }
 }
