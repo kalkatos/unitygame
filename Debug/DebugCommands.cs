@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -166,7 +167,7 @@ namespace Kalkatos.UnityGame
                             break;
                         case TypeCode.Single:
                             float floatParameter = 0;
-                            if (split.Length > 1 && !float.TryParse(split[1], out floatParameter))
+                            if (split.Length > 1 && !float.TryParse(split[1], NumberStyles.Any, CultureInfo.InvariantCulture.NumberFormat, out floatParameter))
                             {
                                 Logger.Log($"Command not executed: {split[0]}. It waits a float number as parameter.");
                                 return;
