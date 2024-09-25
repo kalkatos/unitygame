@@ -11,6 +11,7 @@ namespace Kalkatos.UnityGame
     [DefaultExecutionOrder(-100)]
     public class DebugCommands : MonoBehaviour
     {
+        [SerializeField] private int maxSize = 20000;
         [SerializeField] private CanvasGroup canvasGroup;
         [SerializeField] private TMP_Text debugText;
         [SerializeField] private TMP_InputField inputField;
@@ -191,6 +192,8 @@ namespace Kalkatos.UnityGame
         private void HandleLogReceived (string message, string stackTrace, LogType type)
         {
             debugText.text = $"{debugText.text}\n{message}";
+            if (debugText.text.Length > maxSize)
+                debugText.text = debugText.text.Substring(debugText.text.Length - maxSize, maxSize);
         }
 
         private void AddDefaultDebugMethods ()

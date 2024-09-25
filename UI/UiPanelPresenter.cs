@@ -41,6 +41,8 @@ namespace Kalkatos.UnityGame
             if (isShowing)
                 return;
             isShowing = true;
+            panel.localScale = Vector3.one * 0.5f;
+            panel.DOScale(1f, 0.25f);
             canvasGroup.alpha = 0;
             canvasGroup.DOFade(1f, 0.25f);
             canvasGroup.interactable = true;
@@ -52,6 +54,7 @@ namespace Kalkatos.UnityGame
             if (!isShowing)
                 return;
             isShowing = false;
+            panel.DOScale(0.5f, 0.25f);
             canvasGroup.DOFade(0f, 0.25f);
             canvasGroup.interactable = false;
             canvasGroup.blocksRaycasts = false;
