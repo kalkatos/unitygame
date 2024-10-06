@@ -4,22 +4,34 @@ using UnityEngine;
 
 namespace Kalkatos.UnityGame
 {
+    [ExecuteAlways]
     public class SpriteColorChanger : MonoBehaviour
     {
         [Header("Config")]
-        [SerializeField] private float presetTime;
+        [SerializeField] private float forceAlpha = 1f;
         [Header("Reference")]
         [SerializeField] private SpriteRenderer[] spriteRenderers;
 
         private Color[] originalColors;
+        private float lastAlpha;
 
         public float Alpha { set { SetAlpha(value); } }
 
         private void Awake ()
         {
+            lastAlpha = forceAlpha;
             originalColors = new Color[spriteRenderers.Length];
             for (int i = 0; i < spriteRenderers.Length; i++)
                 originalColors[i] = spriteRenderers[i].color;
+        }
+
+        private void Update ()
+        {
+            if (forceAlpha != lastAlpha)
+            {
+                lastAlpha = forceAlpha;
+                SetAlpha(forceAlpha);
+            }
         }
 
         public void SetAlpha (float alpha)
@@ -44,16 +56,6 @@ namespace Kalkatos.UnityGame
                 renderer.DOFade(alpha, time);
         }
 
-        public void FadeOutWithPresetTime ()
-        {
-            SetAlphaOverTime(0, presetTime);
-        }
-
-        public void FadeInWithPresetTime ()
-        {
-            SetAlphaOverTime(1, presetTime);
-        }
-
         public void FadeOut (float time)
         {
             SetAlphaOverTime(0, time);
@@ -62,11 +64,6 @@ namespace Kalkatos.UnityGame
         public void FadeIn (float time)
         {
             SetAlphaOverTime(1, time);
-        }
-
-        public void FlashColor (Color color)
-        {
-            FlashColor(color, presetTime);
         }
 
         public void FlashColor (Color color, float time)
