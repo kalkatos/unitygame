@@ -5,7 +5,7 @@ using UnityEditor;
 
 public class FindReferencesInProject
 {
-    private const string MenuItemText = "Assets/Find References In Project";
+    private const string MenuItemText = "Assets/Find References In Project (Alt)";
 
     [MenuItem(MenuItemText, false, 25)]
     public static void Find ()
