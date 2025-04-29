@@ -12,7 +12,7 @@ namespace Kalkatos.UnityGame
 #if ODIN_INSPECTOR
 		[PreviewField] 
 #endif
-        public Sprite[] Sprites;
+		public Sprite[] Sprites;
 
 		private Dictionary<string, Sprite> spriteDict = new Dictionary<string, Sprite>();
 
@@ -36,9 +36,9 @@ namespace Kalkatos.UnityGame
 			if (!spriteDict.ContainsKey(name))
 			{
 				Logger.LogWarning($"Failed to get sprite with name {name}.");
-                if (Sprites.Length > 0)
-                    return Sprites[Random.Range(0, Sprites.Length)];
-                return null;
+				if (Sprites.Length > 0)
+					return Sprites[Random.Range(0, Sprites.Length)];
+				return null;
 			}
 			return spriteDict[name];
 		}
