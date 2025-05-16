@@ -7,6 +7,8 @@ namespace Kalkatos.UnityGame
     public class BaseScreen : MonoBehaviour
 	{
 		public CanvasGroup CanvasGroup;
+		public FloatValueGetter OpenTime;
+		public FloatValueGetter CloseTime;
 
         private void Awake ()
         {
@@ -20,14 +22,16 @@ namespace Kalkatos.UnityGame
 			CanvasGroup.alpha = 0;
 			CanvasGroup.interactable = true;
 			CanvasGroup.blocksRaycasts = true;
-			CanvasGroup.DOFade(1, 0.5f);
-			transform.DOScale(Vector3.one, 0.5f);
+			float time = OpenTime.GetValue();
+			CanvasGroup.DOFade(1, time);
+			transform.DOScale(Vector3.one, time);
 		}
 
 		public virtual void Close ()
 		{
-			CanvasGroup.DOFade(0, 0.5f);
-            transform.DOScale(Vector3.one * 0.1f, 0.5f);
+			float time = CloseTime.GetValue();
+			CanvasGroup.DOFade(0, time);
+            transform.DOScale(Vector3.one * 0.1f, time);
             CanvasGroup.interactable = false;
             CanvasGroup.blocksRaycasts = false;
         }
