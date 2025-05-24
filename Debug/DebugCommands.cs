@@ -33,7 +33,7 @@ namespace Kalkatos.UnityGame
                 instance = this;
             else if (instance != this)
             {
-                Destroy(this);
+                Destroy(gameObject);
                 return;
             }
 
