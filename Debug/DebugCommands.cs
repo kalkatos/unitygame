@@ -42,15 +42,15 @@ namespace Kalkatos.UnityGame
             DontDestroyOnLoad(gameObject);
         }
 
+        private void Start ()
+        {
+            AddDefaultDebugMethods();
+        }
+
         private void OnDestroy () 
         {
             Application.logMessageReceived -= HandleLogReceived;
             inputField.onSubmit.RemoveListener(HandleInputSubmit);
-        }
-
-        private void Start ()
-        {
-            AddDefaultDebugMethods();
         }
 
         private void Update ()
