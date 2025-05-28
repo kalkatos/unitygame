@@ -1,6 +1,6 @@
-﻿using UnityEngine;
+﻿using Sirenix.OdinInspector;
+using UnityEngine;
 using UnityEngine.Events;
-using Sirenix.OdinInspector;
 
 namespace Kalkatos.UnityGame
 {
@@ -13,17 +13,17 @@ namespace Kalkatos.UnityGame
 		[ShowIf(nameof(UseOnEnable))] public UnityEvent onEnableEvent;
 		[ShowIf(nameof(UseStart))] public UnityEvent onStartEvent;
 
-        private void Awake ()
-        {
+		private void Awake ()
+		{
 			onAwakeEvent?.Invoke();
-        }
+		}
 
-        private void OnEnable ()
-        {
-            onEnableEvent?.Invoke();
-        }
+		private void OnEnable ()
+		{
+			onEnableEvent?.Invoke();
+		}
 
-        private void Start ()
+		private void Start ()
 		{
 			onStartEvent?.Invoke();
 		}

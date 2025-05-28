@@ -3,7 +3,7 @@ using UnityEngine.Events;
 
 namespace Kalkatos.UnityGame
 {
-    public class AnimationEventCaller : MonoBehaviour
+	public class AnimationEventCaller : MonoBehaviour
 	{
 		[SerializeField] private UnityEvent animationEvent;
 

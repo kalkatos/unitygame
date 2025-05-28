@@ -5,17 +5,17 @@ using UnityEngine.UI;
 namespace Kalkatos.UnityGame.UI
 {
 	public class SelectableImage : MonoBehaviour
-    {
-        public Action<SelectableImage> OnImageSelected;
+	{
+		public Action<SelectableImage> OnImageSelected;
 
-        public int Index;
+		public int Index;
 
-        [SerializeField] private Image image;
-        [SerializeField] private Button button;
+		[SerializeField] private Image image;
+		[SerializeField] private Button button;
 
 		private void Awake ()
 		{
-            button.onClick.AddListener(HandleButtonClick);
+			button.onClick.AddListener(HandleButtonClick);
 		}
 
 		private void OnDestroy ()
@@ -24,13 +24,13 @@ namespace Kalkatos.UnityGame.UI
 		}
 
 		public void SetSprite (Sprite sprite)
-        {
-            image.sprite = sprite;
+		{
+			image.sprite = sprite;
 		}
 
-        private void HandleButtonClick ()
-        {
+		private void HandleButtonClick ()
+		{
 			OnImageSelected?.Invoke(this);
 		}
-    }
+	}
 }

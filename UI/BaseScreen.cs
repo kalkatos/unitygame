@@ -4,19 +4,19 @@ using UnityEngine;
 namespace Kalkatos.UnityGame
 {
 	[RequireComponent(typeof(CanvasGroup))]
-    public class BaseScreen : MonoBehaviour
+	public class BaseScreen : MonoBehaviour
 	{
 		public CanvasGroup CanvasGroup;
 		public FloatValueGetter OpenTime;
 		public FloatValueGetter CloseTime;
 
-        private void Awake ()
-        {
-            if (CanvasGroup == null)
+		private void Awake ()
+		{
+			if (CanvasGroup == null)
 				CanvasGroup = GetComponent<CanvasGroup>();
-        }
+		}
 
-        public virtual void Open ()
+		public virtual void Open ()
 		{
 			transform.localScale = Vector3.one * 0.5f;
 			CanvasGroup.alpha = 0;
@@ -31,9 +31,9 @@ namespace Kalkatos.UnityGame
 		{
 			float time = CloseTime.GetValue();
 			CanvasGroup.DOFade(0, time);
-            transform.DOScale(Vector3.one * 0.1f, time);
-            CanvasGroup.interactable = false;
-            CanvasGroup.blocksRaycasts = false;
-        }
+			transform.DOScale(Vector3.one * 0.1f, time);
+			CanvasGroup.interactable = false;
+			CanvasGroup.blocksRaycasts = false;
+		}
 	}
 }

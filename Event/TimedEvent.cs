@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 #if ODIN_INSPECTOR
-using Sirenix.OdinInspector; 
+using Sirenix.OdinInspector;
 #endif
 using System;
 using System.Collections;
@@ -13,27 +13,27 @@ namespace Kalkatos.UnityGame
 		[SerializeField] private TimedEventBit[] events;
 		[SerializeField] private bool isSequence;
 #if ODIN_INSPECTOR
-		[ShowIf(nameof(isSequence))] 
+		[ShowIf(nameof(isSequence))]
 #endif
-        [SerializeField] private bool loopSequence;
+		[SerializeField] private bool loopSequence;
 #if ODIN_INSPECTOR
-		[ShowIf(nameof(isSequence)), ShowIf(nameof(loopSequence))] 
+		[ShowIf(nameof(isSequence)), ShowIf(nameof(loopSequence))]
 #endif
-        [SerializeField] private int loopSequenceCount;
+		[SerializeField] private int loopSequenceCount;
 
 		// Events
 #if ODIN_INSPECTOR
-		[ShowIf(nameof(isSequence))]  
+		[ShowIf(nameof(isSequence))]
 #endif
-        public UnityEvent SequenceTimeoutEvent;
+		public UnityEvent SequenceTimeoutEvent;
 #if ODIN_INSPECTOR
-		[ShowIf(nameof(isSequence))]  
+		[ShowIf(nameof(isSequence))]
 #endif
-        public UnityEvent AnyTimeoutEvent;
+		public UnityEvent AnyTimeoutEvent;
 #if ODIN_INSPECTOR
-		[ShowIf(nameof(isSequence)), ShowIf(nameof(loopSequence))]  
+		[ShowIf(nameof(isSequence)), ShowIf(nameof(loopSequence))]
 #endif
-        public UnityEvent FinalTimeoutEvent;
+		public UnityEvent FinalTimeoutEvent;
 
 		private int currentEvent = 0;
 		private int loopCounter;
@@ -123,31 +123,31 @@ namespace Kalkatos.UnityGame
 	public class TimedEventBit
 	{
 #if ODIN_INSPECTOR
-		[InlineProperty] 
+		[InlineProperty]
 #endif
-        public FloatValueGetter timeAsGetter;
+		public FloatValueGetter timeAsGetter;
 #if ODIN_INSPECTOR
-		[HorizontalGroup]  
+		[HorizontalGroup]
 #endif
-        public bool loop;
+		public bool loop;
 #if ODIN_INSPECTOR
-		[HorizontalGroup, HideLabel, ShowIf(nameof(loop))]  
+		[HorizontalGroup, HideLabel, ShowIf(nameof(loop))]
 #endif
-        public int loopCount;
+		public int loopCount;
 		public bool useUpdateEvent;
 		public UnityEvent TimeoutEvent;
 #if ODIN_INSPECTOR
-		[ShowIf(nameof(loop))]  
+		[ShowIf(nameof(loop))]
 #endif
-        public UnityEvent EndOfLoopEvent;
+		public UnityEvent EndOfLoopEvent;
 #if ODIN_INSPECTOR
-		[ShowIf(nameof(useUpdateEvent))]  
+		[ShowIf(nameof(useUpdateEvent))]
 #endif
-        public bool InvertUpdateEvent;
+		public bool InvertUpdateEvent;
 #if ODIN_INSPECTOR
-		[ShowIf(nameof(useUpdateEvent))]  
+		[ShowIf(nameof(useUpdateEvent))]
 #endif
-        public UnityEvent<float> UpdateEvent;
+		public UnityEvent<float> UpdateEvent;
 
 		private int loopCounter;
 		private Coroutine currentWait;
@@ -186,7 +186,7 @@ namespace Kalkatos.UnityGame
 			if (currentWait != null)
 			{
 				//Logger.Log("[Timed Event] << STOP >> timed event " + parent.name);
-				parent.StopCoroutine(currentWait); 
+				parent.StopCoroutine(currentWait);
 			}
 			Rewind();
 			if (invoke)

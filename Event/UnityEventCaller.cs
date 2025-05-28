@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 namespace Kalkatos.UnityGame
 {
-    public class UnityEventCaller : MonoBehaviour
+	public class UnityEventCaller : MonoBehaviour
 	{
 		[SerializeField] private EventCaller[] callbacks;
 

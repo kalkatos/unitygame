@@ -1,5 +1,5 @@
 ﻿#if ODIN_INSPECTOR
-using Sirenix.OdinInspector; 
+using Sirenix.OdinInspector;
 #endif
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,7 +10,7 @@ namespace Kalkatos.UnityGame
 	public class SpriteListScriptable : ScriptableObject
 	{
 #if ODIN_INSPECTOR
-		[PreviewField] 
+		[PreviewField]
 #endif
 		public Sprite[] Sprites;
 
@@ -23,7 +23,7 @@ namespace Kalkatos.UnityGame
 				Logger.LogWarning($"Failed to get sprite with index {index}. Must be from 0 to {Sprites.Length}.");
 				if (Sprites.Length > 0)
 					return Sprites[Random.Range(0, Sprites.Length)];
-				return null; 
+				return null;
 			}
 			return Sprites[index];
 		}

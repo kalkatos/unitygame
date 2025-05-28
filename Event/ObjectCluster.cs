@@ -6,7 +6,7 @@ using Sirenix.OdinInspector;
 namespace Kalkatos.UnityGame
 {
 	public class ObjectCluster : MonoBehaviour
-    {
+	{
 		[SerializeField] private bool useChildren = true;
 #if ODIN_INSPECTOR
 		[HideIf(nameof(useChildren))]
@@ -29,9 +29,9 @@ namespace Kalkatos.UnityGame
 		}
 
 #if ODIN_INSPECTOR
-        [Button] 
+		[Button]
 #endif
-        public void Toggle ()
+		public void Toggle ()
 		{
 			if (useChildren)
 			{
@@ -60,9 +60,9 @@ namespace Kalkatos.UnityGame
 		}
 
 #if ODIN_INSPECTOR
-        [Button] 
+		[Button]
 #endif
-        public void Deactivate ()
+		public void Deactivate ()
 		{
 			SetActive(false);
 		}

@@ -4,12 +4,12 @@ using UnityEngine.UI;
 
 namespace Kalkatos.UnityGame.Debug
 {
-    public class DebugOpener : MonoBehaviour
-    {
-        [SerializeField] private Button debuggerButton;
-        [SerializeField] private Button closeButton;
-        [SerializeField] private GameObject debuggerScreen;
-        [SerializeField] private TMP_Text debugText;
+	public class DebugOpener : MonoBehaviour
+	{
+		[SerializeField] private Button debuggerButton;
+		[SerializeField] private Button closeButton;
+		[SerializeField] private GameObject debuggerScreen;
+		[SerializeField] private TMP_Text debugText;
 
 		private float firstClickTime;
 		private int clickCounter;
@@ -17,10 +17,10 @@ namespace Kalkatos.UnityGame.Debug
 		private void Awake ()
 		{
 			if (!UnityEngine.Debug.isDebugBuild)
-            {
+			{
 				Destroy(gameObject);
 				return;
-            }
+			}
 
 			debuggerButton.onClick.AddListener(OnDebugButtonClick);
 			closeButton.onClick.AddListener(OnCloseButtonClick);
@@ -41,7 +41,7 @@ namespace Kalkatos.UnityGame.Debug
 			else if (Time.time - firstClickTime > 2)
 				clickCounter = 0;
 			clickCounter++;
-			if (clickCounter >= 3) 
+			if (clickCounter >= 3)
 			{
 				clickCounter = 0;
 				debuggerScreen.SetActive(true);
@@ -50,8 +50,8 @@ namespace Kalkatos.UnityGame.Debug
 
 		private void OnCloseButtonClick ()
 		{
-            clickCounter = 0;
-            debuggerScreen.SetActive(false);
+			clickCounter = 0;
+			debuggerScreen.SetActive(false);
 		}
 
 		private void OnLogMessageReceived (string message, string stackTrace, LogType type)

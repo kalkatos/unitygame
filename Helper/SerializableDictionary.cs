@@ -19,7 +19,7 @@ namespace Kalkatos.UnityGame
 			keys.Clear();
 			values.Clear();
 			foreach (KeyValuePair<TKey, TValue> pair in this)
-         {
+			{
 				keys.Add(pair.Key);
 				values.Add(pair.Value);
 			}

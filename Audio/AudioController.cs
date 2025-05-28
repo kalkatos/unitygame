@@ -97,12 +97,12 @@ namespace Kalkatos.UnityGame.Audio
 							instance.musicChannel.Stop();
 							//Logger.Log($"[AudioController] Stopped music {instance.musicChannel.clip} X X "); 
 						}
-					})); 
+					}));
 			}
 			else
 			{
 				//Logger.Log($"[AudioController] Stopping music {instance.musicChannel.clip} [] [] ");
-				instance.musicChannel.Stop(); 
+				instance.musicChannel.Stop();
 			}
 		}
 
