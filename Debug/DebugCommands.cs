@@ -191,6 +191,17 @@ namespace Kalkatos.UnityGame
 
 		private void HandleLogReceived (string message, string stackTrace, LogType type)
 		{
+			switch (type)
+			{
+				case LogType.Error:
+				case LogType.Assert:
+				case LogType.Exception:
+					message = $"<color=red>{message}</color>";
+					break;
+				case LogType.Warning:
+					message = $"<color=yellow>{message}</color>";
+					break;
+			}
 			debugText.text = $"{debugText.text}\n{message}";
 			if (debugText.text.Length > maxSize)
 				debugText.text = debugText.text.Substring(debugText.text.Length - maxSize, maxSize);
