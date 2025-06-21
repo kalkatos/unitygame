@@ -30,5 +30,12 @@ namespace Kalkatos.UnityGame
 		{
 			mono.StartCoroutine(WaitFramesCoroutine(frameCount, callback));
 		}
+
+		public static void SetLayer (this GameObject gameObject, int layer)
+		{
+			gameObject.layer = layer;
+			foreach (Transform child in gameObject.transform)
+				child.gameObject.SetLayer(layer);
+		}
 	}
 }
