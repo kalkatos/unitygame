@@ -37,5 +37,13 @@ namespace Kalkatos.UnityGame
 			foreach (Transform child in gameObject.transform)
 				child.gameObject.SetLayer(layer);
 		}
+
+		public static void SetLayer (this GameObject gameObject, LayerMask layer)
+		{
+			int layerNumber = (int)Mathf.Log(layer.value, 2);
+			gameObject.layer = layerNumber;
+			foreach (Transform child in gameObject.transform)
+				child.gameObject.SetLayer(layerNumber);
+		}
 	}
 }
