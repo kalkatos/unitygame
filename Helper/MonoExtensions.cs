@@ -45,5 +45,21 @@ namespace Kalkatos.UnityGame
 			foreach (Transform child in gameObject.transform)
 				child.gameObject.SetLayer(layerNumber);
 		}
+
+		public static float Tangent (this AnimationCurve curve, float time)
+		{
+			// Evaluate the curve at the target time
+			float valueAtTime = curve.Evaluate(time);
+
+			bool isZero = Mathf.Approximately(time, 0f);
+			// Calculate a small time offset
+			float timeOffset = 0.001f;
+			float valueAtOffsetTime = isZero ? curve.Evaluate(time + timeOffset) : curve.Evaluate(time - timeOffset);
+
+			// Calculate the tangent (slope)
+			if (isZero)
+				return (valueAtOffsetTime - valueAtTime) / timeOffset;
+			return (valueAtTime - valueAtOffsetTime) / timeOffset;
+		}
 	}
 }
