@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Kalkatos.UnityGame
 {
@@ -60,6 +61,20 @@ namespace Kalkatos.UnityGame
 			if (isZero)
 				return (valueAtOffsetTime - valueAtTime) / timeOffset;
 			return (valueAtTime - valueAtOffsetTime) / timeOffset;
+		}
+
+		public static Vector3 ToWorldPosition (this PointerEventData eventData, Camera camera, Plane plane)
+		{
+			if (camera == null)
+				camera = Camera.main;
+			if (camera == null)
+			{
+				Logger.LogError("No camera found to convert PointerEventData to world position.");
+				return Vector3.zero;
+			}
+			Ray ray = camera.ScreenPointToRay(eventData.position);
+			plane.Raycast(ray, out float distance);
+			return ray.GetPoint(distance);
 		}
 	}
 }
