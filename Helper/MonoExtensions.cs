@@ -1,7 +1,11 @@
+using DG.Tweening;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 namespace Kalkatos.UnityGame
 {
@@ -75,6 +79,51 @@ namespace Kalkatos.UnityGame
 			Ray ray = camera.ScreenPointToRay(eventData.position);
 			plane.Raycast(ray, out float distance);
 			return ray.GetPoint(distance);
+		}
+
+		public static void Shuffle<T> (this IList<T> list)
+		{
+			for (int i = list.Count - 1; i > 0; i--)
+			{
+				int j = Random.Range(0, i + 1);
+				T temp = list[i];
+				list[i] = list[j];
+				list[j] = temp;
+			}
+		}
+
+		public static Vector3 ToVector3XZ (this Vector2 vector2)
+		{
+			return new Vector3(vector2.x, 0, vector2.y);
+		}
+
+		public static Vector3 ToVector3XZ (this Vector2Int vector2)
+		{
+			return new Vector3(vector2.x, 0, vector2.y);
+		}
+
+		public static void Fade (this SpriteRenderer spriteRenderer, float time, float from, float to)
+		{
+			Color color = spriteRenderer.color;
+			color.a = from;
+			spriteRenderer.color = color;
+			DOVirtual.Float(from, to, time, value =>
+			{
+				color.a = value;
+				spriteRenderer.color = color;
+			}).SetEase(Ease.InOutQuad);
+		}
+
+		public static void Fade (this Image image, float time, float from, float to)
+		{
+			Color color = image.color;
+			color.a = from;
+			image.color = color;
+			DOVirtual.Float(from, to, time, value =>
+			{
+				color.a = value;
+				image.color = color;
+			}).SetEase(Ease.InOutQuad);
 		}
 	}
 }
