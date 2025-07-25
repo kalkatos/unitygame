@@ -52,6 +52,11 @@ namespace Kalkatos.UnityGame
 			}
 			return default;
 		}
+
+		public static implicit operator FloatValueGetter (float value)
+		{
+			return new FloatValueGetter { Type = ValueType.Simple, SimpleValue = value };
+		}
 	}
 
 #if ODIN_INSPECTOR
@@ -100,6 +105,11 @@ namespace Kalkatos.UnityGame
 			}
 			return default;
 		}
+
+		public static implicit operator IntValueGetter (int value)
+		{
+			return new IntValueGetter { Type = ValueType.Simple, SimpleValue = value };
+		}
 	}
 
 #if ODIN_INSPECTOR
@@ -142,6 +152,11 @@ namespace Kalkatos.UnityGame
 			}
 			return default;
 		}
+
+		public static implicit operator StringValueGetter (string value)
+		{
+			return new StringValueGetter { Type = ValueType.Simple, SimpleValue = value };
+		}
 	}
 
 #if ODIN_INSPECTOR
@@ -183,6 +198,11 @@ namespace Kalkatos.UnityGame
 					break;
 			}
 			return default;
+		}
+
+		public static implicit operator BoolValueGetter (bool value)
+		{
+			return new BoolValueGetter { Type = ValueType.Simple, SimpleValue = value };
 		}
 	}
 }
