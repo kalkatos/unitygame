@@ -9,6 +9,7 @@ namespace Kalkatos.UnityGame
 	{
 		[Header("Config")]
 		[SerializeField] private float forceAlpha = 1f;
+		[SerializeField] private float defaultTime = 0.2f;
 		[Header("Reference")]
 		[SerializeField] private SpriteRenderer[] spriteRenderers;
 
@@ -61,9 +62,19 @@ namespace Kalkatos.UnityGame
 			SetAlphaOverTime(0, time);
 		}
 
+		public void FadeOut ()
+		{
+			FadeOut(defaultTime);
+		}
+
 		public void FadeIn (float time)
 		{
 			SetAlphaOverTime(1, time);
+		}
+
+		public void FadeIn ()
+		{
+			FadeIn(defaultTime);
 		}
 
 		public void FlashColor (Color color, float time)
