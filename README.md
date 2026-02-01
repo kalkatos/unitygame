@@ -84,11 +84,11 @@ A comprehensive collection of reusable Unity utilities and components designed t
 ## Dependencies
 
 This library integrates with popular Unity packages:
-- **DOTween** (optional): For smooth animations and transitions in UI and sprites
+- **DOTween**: Required for smooth animations and transitions in UI (BaseScreen) and sprite utilities (MonoExtensions fading)
 - **Odin Inspector** (optional): Enhanced inspector experience with conditional fields
-- **TextMeshPro**: For advanced text rendering in UI components
+- **TextMeshPro**: For advanced text rendering in UI components (InfoBox, DebugCommands)
 
-> **Note**: Code sections using optional dependencies are wrapped in conditional compilation directives (`#if ODIN_INSPECTOR`, `#if DG.DOTween`) and will gracefully degrade if not present.
+> **Note**: Code sections using optional dependencies are wrapped in conditional compilation directives (`#if ODIN_INSPECTOR`) and will gracefully degrade if not present. DOTween is required for animation features.
 
 ## Usage Examples
 
